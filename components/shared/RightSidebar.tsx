@@ -5,26 +5,26 @@ import RenderTag from "./RenderTag";
 
 const topQuestions = [
   {
-    _id: 1,
+    _id: '1',
     title: "How do i use expresshohow do i use expressw do i use express?",
   },
-  { _id: 2, title: "Do i use expresshow do i use express?" },
+  { _id: '2', title: "Do i use expresshow do i use express?" },
   {
-    _id: 3,
+    _id: '3',
     title: "I usehow do i use expresshow do i use express express",
   },
   {
-    _id: 4,
+    _id: '4',
     title: "Use how do i use expresshow do i use expressexpress",
   },
 ];
 
 const poulerTags = [
-  { _id: 1, name: "javascript", totalQuestions: 7 },
-  { _id: 2, name: "react", totalQuestions: 5 },
-  { _id: 3, name: "nextJs", totalQuestions: 3 },
-  { _id: 4, name: "redux", totalQuestions: 5 },
-  { _id: 5, name: "vue", totalQuestions: 2 },
+  { _id: '1', name: "javascript", totalQuestions: 7 },
+  { _id: '2', name: "react", totalQuestions: 5 },
+  { _id: '3', name: "nextJs", totalQuestions: 3 },
+  { _id: '4', name: "redux", totalQuestions: 5 },
+  { _id: '5', name: "vue", totalQuestions: 2 },
 ];
 
 const RightSidebar = () => {
