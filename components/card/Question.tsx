@@ -43,7 +43,12 @@ const Question = () => {
     console.log('click on onSubmit button');
     
     try {
-      await createQuestion({});
+      await createQuestion({
+        title:values.title,
+        Content:values.explanation,
+        tags:values.tags,
+      
+      });
     } catch (error) {
       console.log(error);
       
@@ -108,7 +113,7 @@ const Question = () => {
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Be specific and imagine you're asking a question to another
+                Be specific and imagine you are asking a question to another
                 person.{" "}
               </FormDescription>
               <FormMessage className="text-red-500" />

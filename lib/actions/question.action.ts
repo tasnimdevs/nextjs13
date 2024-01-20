@@ -8,7 +8,7 @@ export async function createQuestion(params: any) {
   try {
     connectToDatabase();
 
-    const { title, content, tags, author, path } = params;
+    const { title, content, tags, author } = params;
 
     const question = await Question.create({
       title,
@@ -19,7 +19,7 @@ export async function createQuestion(params: any) {
 
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
-        { name: { $regex: new RegExp(`${tag}$`, "i") } },
+        { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $push: { question: question._id } },
         { upsert: true, new: true }
       );
@@ -30,5 +30,7 @@ export async function createQuestion(params: any) {
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagDocuments } },
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log("question action:", error);
+  }
 }
