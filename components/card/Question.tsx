@@ -58,16 +58,17 @@ const Question = ({ mongoUserId }: Props) => {
         path: pathname,
       });
 
-      router.push("/");
+      // Uncomment the line below to redirect after successful submission
+      // router.push("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
   }
 
   const handleInputKeyDown = (
-    e: React.KeyboardEvent<HTMLAnchorElement>,
+    e: React.KeyboardEvent<HTMLInputElement>,
     field: any
   ) => {
     if (e.key === "Enter" && field.name === "tags") {
@@ -118,7 +119,6 @@ const Question = ({ mongoUserId }: Props) => {
                   placeholder="shadcn"
                   {...field}
                   className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                  {...field}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
@@ -238,7 +238,7 @@ const Question = ({ mongoUserId }: Props) => {
           {isSubmitting ? (
             <>{type === "edit" ? "Editing..." : "Posting..."}</>
           ) : (
-            <>{type === "edit" ? "Edit Question" : "As a Question"}</>
+            <>{type === "edit" ? "Edit Question" : "Ask a Question"}</>
           )}
         </Button>
       </form>
