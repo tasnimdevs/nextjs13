@@ -6,7 +6,6 @@ import {
   DeleteUserParams,
   UpdateUserParams,
 } from "./shared.types.d";
-("use server");
 
 import User from "@/database/user.model";
 import { connectToDatabase } from "./mongoose";
