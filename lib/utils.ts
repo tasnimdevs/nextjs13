@@ -20,60 +20,44 @@ export const getTimestamp = (createdAt: Date): string => {
   // Calculate time ago
   if (timeDifference < minute) {
     const secondsAgo = Math.floor(timeDifference / 1000);
-    return `${secondsAgo} second${secondsAgo === 1 ? '' : 's'} ago`;
+    return `${secondsAgo} second${secondsAgo === 1 ? "" : "s"} ago`;
   } else if (timeDifference < hour) {
     const minutesAgo = Math.floor(timeDifference / minute);
-    return `${minutesAgo} minute${minutesAgo === 1 ? '' : 's'} ago`;
+    return `${minutesAgo} minute${minutesAgo === 1 ? "" : "s"} ago`;
   } else if (timeDifference < day) {
     const hoursAgo = Math.floor(timeDifference / hour);
-    return `${hoursAgo} hour${hoursAgo === 1 ? '' : 's'} ago`;
+    return `${hoursAgo} hour${hoursAgo === 1 ? "" : "s"} ago`;
   } else if (timeDifference < week) {
     const daysAgo = Math.floor(timeDifference / day);
-    return `${daysAgo} day${daysAgo === 1 ? '' : 's'} ago`;
+    return `${daysAgo} day${daysAgo === 1 ? "" : "s"} ago`;
   } else if (timeDifference < month) {
     const weeksAgo = Math.floor(timeDifference / week);
-    return `${weeksAgo} week${weeksAgo === 1 ? '' : 's'} ago`;
+    return `${weeksAgo} week${weeksAgo === 1 ? "" : "s"} ago`;
   } else if (timeDifference < year) {
     const monthsAgo = Math.floor(timeDifference / month);
-    return `${monthsAgo} month${monthsAgo === 1 ? '' : 's'} ago`;
+    return `${monthsAgo} month${monthsAgo === 1 ? "" : "s"} ago`;
   } else {
     const yearsAgo = Math.floor(timeDifference / year);
-    return `${yearsAgo} year${yearsAgo === 1 ? '' : 's'} ago`;
+    return `${yearsAgo} year${yearsAgo === 1 ? "" : "s"} ago`;
   }
 };
 
 // Example usage
-const createdAt = new Date('2024-01-10T12:00:00Z');
+const createdAt = new Date("2024-01-10T12:00:00Z");
 console.log(getTimestamp(createdAt)); // Output: e.g., '5 days ago'
 
-
-
-export const formatAndDivideNumber = (inputNumber: number): string => {
-  let formattedNumber: string;
-  let divisor: number;
-
-  if (inputNumber >= 1000000) {
-    formattedNumber = (inputNumber / 1000000).toFixed(1);
-    divisor = 1000000;
-  } else if (inputNumber >= 1000) {
-    formattedNumber = (inputNumber / 1000).toFixed(1);
-    divisor = 1000;
-  } else {
-    formattedNumber = inputNumber.toFixed(1);
-    divisor = 1;
+export const formatAndDivideNumber = (num?: number): string => {
+  if (num === undefined) {
+    return "N/A"; // or some other default value
   }
 
-  // Remove trailing .0 (if any)
-  formattedNumber = formattedNumber.replace(/\.0$/, '');
-
-  // Add the appropriate extension
-  formattedNumber += divisor === 1 ? '' : divisor === 1000000 ? 'M' : 'K';
-
-  // Immediately divide the number by the corresponding factor
-  inputNumber /= divisor;
-
-  return `${formattedNumber}`;
+  if (num >= 1000000) {
+    const formattedNum = (num / 1000000).toFixed(1);
+    return `${formattedNum}M`;
+  } else if (num >= 1000) {
+    const formattedNum = (num / 1000).toFixed(1);
+    return `${formattedNum}K`;
+  } else {
+    return num.toString();
+  }
 };
-
-
-

@@ -5,75 +5,17 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const question = [
-  {
-    _id: "1",
-    title: "Cascading Delete in SQLalchemy?",
-    tags: [
-      { _id: "1", name: "python" },
-      { _id: "2", name: "sql" },
-    ],
-    author: {
-      _id: "1",
-      name: "John Doe",
-      picture: "john-doe-picture-url",
-    },
-    upvotes: 10000,
-    views: 100000,
-    answers: [
-      { /* Answer 1 properties */ },
-      { /* Answer 2 properties */ },
-    ],
-    createdAt: new Date("2023-09-01T12:00:00.000Z"),
-  },
-  {
-    _id: "2",
-    title: "What is React Router Dom?",
-    tags: [
-      { _id: "1", name: "next" },
-      { _id: "2", name: "sql" },
-    ],
-    author: {
-      _id: "2",
-      name: "Kamal hassan",
-      picture: "kamal-picture-url",
-    },
-    upvotes: 20000,
-    views: 158000,
-    answers: [
-      { /* Answer 1 properties */ },
-      { /* Answer 2 properties */ },
-    ],
-    createdAt: new Date("2022-09-01T12:00:00.000Z"),
-  },
-  {
-    _id: "3",
-    title: "How to Center a div?",
-    tags: [
-      { _id: "1", name: "css" },
-      { _id: "2", name: "sql" },
-    ],
-    author: {
-      _id: "2",
-      name: "Rakib islam",
-      picture: "kamal-picture-url",
-    },
-    upvotes: 15000,
-    views: 1000000,
-    answers: [
-      { /* Answer 1 properties */ },
-      { /* Answer 2 properties */ },
-    ],
-    createdAt: new Date("2021-09-01T12:00:00.000Z"),
-  },
-];
+
+export default async function Home() {
+
+ const result = await getQuestions({})
+ console.log(result.questions.length);
+ 
 
 
-
-
-export default function Home() {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -101,8 +43,8 @@ export default function Home() {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {question.length > 0 ? (
-          question.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               title={question.title}

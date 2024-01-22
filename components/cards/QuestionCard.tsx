@@ -71,7 +71,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="Message"
-          value={formatAndDivideNumber(answers.length)}
+          // value={formatAndDivideNumber(answers.length)}
           title="Answers"
           textStyles="small-medium text-dark400_light800"
         />
