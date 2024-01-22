@@ -1,3 +1,6 @@
+"use server";
+
+
 import {
   CreateUserParams,
   DeleteUserParams,
