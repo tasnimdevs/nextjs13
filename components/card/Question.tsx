@@ -59,7 +59,7 @@ const Question = ({ mongoUserId }: Props) => {
       });
 
       // Uncomment the line below to redirect after successful submission
-      // router.push("/");
+      router.push("/");
     } catch (error) {
       console.error(error);
     } finally {
