@@ -41,10 +41,10 @@ export async function createUser(userData: CreateUserParams) {
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
-    const { clerkId, updateData, path } = params;
-    const newUser = await User.findOneAndUpdate({ clerkId }, updateData, {
+    const { /* clerkId, updateData, */ path } = params;
+    /* const newUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true,
-    });
+    }); */
     revalidatePath(path);
   } catch (error) {
     console.log(error);
@@ -62,9 +62,9 @@ export async function deleteUser(params: DeleteUserParams) {
       throw new Error("User not found");
     }
 
-    const userQuestionIds = await Question.find({ author: user._id }).distinct(
+   /*  const userQuestionIds = await Question.find({ author: user._id }).distinct(
       "_id"
-    );
+    ); */
 
     // Add await here
     await Question.deleteMany({ author: user._id });
