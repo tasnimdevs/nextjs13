@@ -8,7 +8,7 @@ interface QuestionProps {
   title: string;
   _id: string;
   tags: {
-    map(arg0: (tag: any) => React.JSX.Element): React.ReactNode;
+    map: any;
     _id: string;
     name: string;
   };
@@ -56,7 +56,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/avatar.svg"
           alt="user"
-          // value={author.name}
+          value={author.name}
           title={`-asked ${getTimestamp(createdAt)}`}
           href={`/profile/${author._id}`}
           // isAuthor
@@ -72,7 +72,7 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="Message"
-          value={formatAndDivideNumber(upvotes)}
+          value={formatAndDivideNumber(answers.length)}
           title="Answers"
           textStyles="small-medium text-dark400_light800"
         />
