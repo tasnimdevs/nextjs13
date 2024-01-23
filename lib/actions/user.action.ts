@@ -18,7 +18,7 @@ export async function getUserById(params: any) {
     const { userId } = params;
     console.log("UserId:", userId);
 
-    const user = await User.findOne({ clerkId: userId });
+    const user = await User.findOne({  userId });
     console.log("async user:", user);
 
     return user;

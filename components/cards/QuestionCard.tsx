@@ -7,11 +7,7 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 interface QuestionProps {
   title: string;
   _id: string;
-  tags: {
-    map: any;
-    _id: string;
-    name: string;
-  };
+  tags: Array<{ _id: string; name: string }>; // Change to an array of tags
   author: {
     _id: string;
     name: string;
@@ -23,7 +19,7 @@ interface QuestionProps {
   createdAt: Date;
 }
 
-const QuestionCard = ({
+const QuestionCard: React.FC<QuestionProps> = ({
   title,
   _id,
   tags,
@@ -56,9 +52,9 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/avatar.svg"
           alt="user"
-          value={author.name}
+          value={author ? author.name : 'Unknown Author'} 
           title={`-asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${author._id}`}
+          href={author && author._id ? `/profile/${author._id}` : '/'}
           // isAuthor
           textStyles="small-medium text-dark400_light800"
         />
@@ -72,13 +68,13 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="Message"
-          value={formatAndDivideNumber(answers.length)}
+          value={formatAndDivideNumber(answers ? answers.length : 0)}  
           title="Answers"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
-          alt="eye"
+          alt="eye"          
           value={formatAndDivideNumber(views)}
           title="Views"
           textStyles="small-medium text-dark400_light800"
@@ -87,4 +83,5 @@ const QuestionCard = ({
     </div>
   );
 };
+
 export default QuestionCard;
