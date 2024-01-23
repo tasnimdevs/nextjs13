@@ -8,7 +8,7 @@ const AskQuestion = async () => {
   // const { userId } = auth();
   const userId = "123456";
 
-  console.log("id from auth:",{userId});
+  console.log("id from auth:",userId);
   
 
   if (!userId) redirect("/sign-in");
