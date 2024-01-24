@@ -7,6 +7,8 @@ import React from "react";
 const AskQuestion = async () => {
   const { userId } = auth();
   // const userId = "123456";
+  console.log(userId);
+  
 
   console.log("id from auth:",userId);
   
