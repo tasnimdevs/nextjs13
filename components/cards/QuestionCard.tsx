@@ -7,16 +7,12 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 interface QuestionProps {
   title: string;
   _id: string;
-  tags: {
-    map(arg0: (tag: any) => React.JSX.Element): React.ReactNode;
-    _id: string;
-    name: string;
-  };
+  tags: Array<{ _id: string; name: string }>;
   author: {
     _id: string;
     name: string;
     picture: string;
-  };
+  } | null; // Adjust the type to allow for null
   upvotes: number;
   views: number;
   answers: Array<object>;
@@ -33,6 +29,11 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionProps) => {
+  // Check if author is null or undefined
+  if (!author) {
+    return null; // or handle the case appropriately
+  }
+
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -53,15 +54,16 @@ const QuestionCard = ({
         ))}
       </div>
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
-        <Metric
-          imgUrl="/assets/icons/avatar.svg"
-          alt="user"
-          value={author.name}
-          title={`-asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${author._id}`}
-          // isAuthor
-          textStyles="small-medium text-dark400_light800"
-        />
+        {author && (
+          <Metric
+            imgUrl="/assets/icons/avatar.svg"
+            alt="user"
+            value={author.name}
+            title={`-asked ${getTimestamp(createdAt)}`}
+            href={`/profile/${author._id}`}
+            textStyles="small-medium text-dark400_light800"
+          />
+        )}
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
