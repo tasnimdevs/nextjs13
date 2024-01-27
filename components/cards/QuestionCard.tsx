@@ -29,6 +29,8 @@ const QuestionCard: React.FC<QuestionProps> = ({
   answers,
   createdAt,
 }: QuestionProps) => {
+  console.log(author);
+
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -50,12 +52,12 @@ const QuestionCard: React.FC<QuestionProps> = ({
       </div>
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl="/assets/icons/avatar.svg"
+          imgUrl={author[0].picture}
           alt="user"
-          value={author ? author.name : 'Unknown Author'} 
+          value={author[0].name}
           title={`-asked ${getTimestamp(createdAt)}`}
-          href={author && author._id ? `/profile/${author._id}` : '/'}
-          // isAuthor
+          href={`/profile/${author._id}`}
+          isAuthor
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
@@ -68,13 +70,13 @@ const QuestionCard: React.FC<QuestionProps> = ({
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="Message"
-          value={formatAndDivideNumber(answers ? answers.length : 0)}  
+          value={formatAndDivideNumber(answers ? answers.length : 0)}
           title="Answers"
           textStyles="small-medium text-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
-          alt="eye"          
+          alt="eye"
           value={formatAndDivideNumber(views)}
           title="Views"
           textStyles="small-medium text-dark400_light800"
