@@ -1,6 +1,5 @@
 "use server";
 
-
 import {
   CreateUserParams,
   DeleteUserParams,
@@ -18,9 +17,8 @@ export async function getUserById(params: any) {
     const { userId } = params;
     console.log("UserId:", userId);
 
-    const user = await User.findOne({ clerkId: userId });
-    console.log("async user:", user);
-
+    const user = await User.findOne({ clerkId: userId }).exec();
+    console.log("await user:", user);
     return user;
   } catch (error) {
     console.error("Error during user retrieval:", error);
@@ -38,14 +36,20 @@ export async function createUser(userData: CreateUserParams) {
     throw error;
   }
 }
+
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
     const { clerkId, updateData, path } = params;
-    const newUser = await User.findOneAndUpdate({ clerkId }, updateData, {
+   
+
+    await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true,
     });
     revalidatePath(path);
+
+    console.log("succes update user");
+    
   } catch (error) {
     console.log(error);
     throw error;
@@ -62,9 +66,9 @@ export async function deleteUser(params: DeleteUserParams) {
       throw new Error("User not found");
     }
 
-    const userQuestionIds = await Question.find({ author: user._id }).distinct(
+    /*   const userQuestionIds = await Question.find({ author: user._id }).distinct(
       "_id"
-    );
+    ); */
 
     // Add await here
     await Question.deleteMany({ author: user._id });

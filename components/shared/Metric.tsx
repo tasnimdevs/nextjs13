@@ -9,7 +9,7 @@ interface MetricProps {
   title: string;
   href?: string;
   textStyles?: string;
-  isAuthor?: string;
+  isAuthor?: boolean;
 }
 
 const Metric = ({
