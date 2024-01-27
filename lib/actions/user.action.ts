@@ -1,6 +1,5 @@
 "use server";
 
-
 import {
   CreateUserParams,
   DeleteUserParams,
@@ -18,8 +17,8 @@ export async function getUserById(params: any) {
     const { userId } = params;
     console.log("UserId:", userId);
 
-    const user = await User.findOne({ clerkId: userId });
-    console.log("async user:", user);
+    const user = await User.findOne({ clerkId: userId }).exec(); ;
+    console.log("await user:", user);
 
     return user;
   } catch (error) {
@@ -38,6 +37,7 @@ export async function createUser(userData: CreateUserParams) {
     throw error;
   }
 }
+
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
