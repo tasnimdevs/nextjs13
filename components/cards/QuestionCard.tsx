@@ -7,12 +7,18 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 interface QuestionProps {
   title: string;
   _id: string;
-  tags: Array<{ _id: string; name: string }>; // Change to an array of tags
-  author: {
-    _id: string;
-    name: string;
-    picture: string;
-  };
+  tags: Array<{ _id: string; name: string }>;
+  author:
+    | {
+        _id: string;
+        name: string;
+        picture: string;
+      }
+    | Array<{
+        _id: string;
+        name: string;
+        picture: string;
+      }>;
   upvotes: number;
   views: number;
   answers: Array<object>;
@@ -29,7 +35,7 @@ const QuestionCard: React.FC<QuestionProps> = ({
   answers,
   createdAt,
 }: QuestionProps) => {
-  console.log(author);
+  const authorName = Array.isArray(author) ? author[0].name : author.name;
 
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
@@ -52,11 +58,13 @@ const QuestionCard: React.FC<QuestionProps> = ({
       </div>
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl={author[0].picture}
+          imgUrl={Array.isArray(author) ? author[0].picture : author.picture}
           alt="user"
-          value={author[0].name}
+          value={authorName}
           title={`-asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${author._id}`}
+          href={`/profile/${
+            Array.isArray(author) ? author[0]._id : author._id
+          }`}
           isAuthor
           textStyles="small-medium text-dark400_light800"
         />
