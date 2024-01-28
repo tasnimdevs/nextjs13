@@ -3,6 +3,7 @@
 import {
   CreateUserParams,
   DeleteUserParams,
+  GetAllUsersParams,
   UpdateUserParams,
 } from "./shared.types.d";
 
@@ -41,7 +42,6 @@ export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
     const { clerkId, updateData, path } = params;
-   
 
     await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true,
@@ -49,7 +49,6 @@ export async function updateUser(params: UpdateUserParams) {
     revalidatePath(path);
 
     console.log("succes update user");
-    
   } catch (error) {
     console.log(error);
     throw error;
@@ -82,3 +81,18 @@ export async function deleteUser(params: DeleteUserParams) {
     throw error;
   }
 }
+
+export async function getAllUsers(params: GetAllUsersParams) {
+  try {
+    connectToDatabase();
+    /*  const {page=1, pageSize=20, filter,serchQuery}=params; */
+
+    const users = await User.find({})
+    .sort({ createdAt: -1 });
+    return { users };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
