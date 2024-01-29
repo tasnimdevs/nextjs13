@@ -7,6 +7,7 @@ import NoResult from "@/components/shared/NoResult";
 import { getAllTags } from "@/lib/actions/tag.actions";
 
 const Page = async () => {
+  
   const result = await getAllTags({});
 
   
