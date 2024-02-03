@@ -1,13 +1,24 @@
+import Answer from "@/components/card/Answer";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
+import RenderTag from "@/components/shared/RenderTag";
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getUserById } from "@/lib/actions/user.action";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const page = async ({ params, searchParams }) => {
   const result = await getQuestionById({ questionId: params.id });
+  const { userId: clerkId } = auth();
+
+  let mongoUser;
+
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
 
   console.log(result.author);
 
@@ -47,7 +58,9 @@ const page = async ({ params, searchParams }) => {
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="Message"
-          value={formatAndDivideNumber(result.answers ? result.answers.length : 0)}
+          value={formatAndDivideNumber(
+            result.answers ? result.answers.length : 0
+          )}
           title="Answers"
           textStyles="small-medium text-dark400_light800"
         />
@@ -59,7 +72,25 @@ const page = async ({ params, searchParams }) => {
           textStyles="small-medium text-dark400_light800"
         />
       </div>
-      <ParseHTML data={result.content}/>
+      <ParseHTML data={result.content} />
+
+      <div>
+        {result.tags.map((tag: any) => (
+          <RenderTag
+            key={tag._id}
+            _id={tag._id}
+            name={tag.name}
+            showCount={false}
+          />
+        ))}
+      </div>
+
+      <Answer 
+      
+      question={result.content}
+      questionId={JSON.stringify(result._id)}
+      authorId={JSON.stringify(mongoUser._id)}
+      />
     </>
   );
 };
