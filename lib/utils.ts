@@ -48,7 +48,7 @@ console.log(getTimestamp(createdAt)); // Output: e.g., '5 days ago'
 
 export const formatAndDivideNumber = (num?: number): string => {
   if (num === undefined) {
-    return "N/A"; // or some other default value
+    return "0"; // or some other default value
   }
 
   if (num >= 1000000) {

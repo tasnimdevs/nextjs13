@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
+import Votes from "./Votes";
 
 interface Props {
   questionId: string;
@@ -58,7 +59,7 @@ const AllAnswers = async ({
                   </div>
                 </Link>
                 <div className="flex justify-end">
-                    Votting
+                    <Votes />
                 </div>
               </div>
             </div>
