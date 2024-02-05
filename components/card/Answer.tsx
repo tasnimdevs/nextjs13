@@ -36,7 +36,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
     },
   });
 
-  const handleCreateAnswer = async (valuse: z.infer<typeof AnswerSchema>) => {
+  const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
     setIsSubmitting(true);
 
     try {
@@ -46,7 +46,15 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         question: JSON.parse(questionId),
         path: pathname,
       });
+
+      form.reset();
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent("");
+      }
     } catch (error) {
+      console.log(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -128,7 +136,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           />
           <div className="flex justify-end">
             <Button
-              type="button"
+              type="submit"
               className="primary-gradient w-fit text-white"
               disabled={isSubmitting}
             >

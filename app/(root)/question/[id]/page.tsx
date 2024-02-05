@@ -1,4 +1,5 @@
 import Answer from "@/components/card/Answer";
+import AllAnswers from "@/components/shared/AllAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
 import RenderTag from "@/components/shared/RenderTag";
@@ -20,7 +21,7 @@ const page = async ({ params, searchParams }) => {
     mongoUser = await getUserById({ userId: clerkId });
   }
 
-  console.log(result.author);
+  console.log("answer length:", result.answer.length);
 
   return (
     <>
@@ -47,7 +48,7 @@ const page = async ({ params, searchParams }) => {
           {result.title}
         </h2>
       </div>
-      <div className="mb-8 mt-5 flex fex-wrap gap-4">
+      <div className="mb-8 mt-5 flex flex-wrap gap-4">
         <Metric
           imgUrl="/assets/icons/clock.svg"
           alt="clock icon"
@@ -85,11 +86,16 @@ const page = async ({ params, searchParams }) => {
         ))}
       </div>
 
-      <Answer 
-      
-      question={result.content}
-      questionId={JSON.stringify(result._id)}
-      authorId={JSON.stringify(mongoUser._id)}
+      <AllAnswers
+        questionId={result._id}
+        userId={JSON.stringify(mongoUser._id)}
+        totalAnswers={result.answer.length}
+      />
+
+      <Answer
+        question={result.content}
+        questionId={JSON.stringify(result._id)}
+        authorId={JSON.stringify(mongoUser._id)}
       />
     </>
   );
