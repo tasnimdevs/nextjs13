@@ -94,12 +94,13 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       // If downvoted, remove the downvote and add the upvote
       updateQuery = {
         $pull: { downvotes: userId },
-        $addToSet: { upvotes: userId },
+        $push: { upvotes: userId },
       };
     } else {
       // If not voted, add the upvote
       updateQuery = { $addToSet: { upvotes: userId } };
     }
+    console.log("upvote:",updateQuery);
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
@@ -108,7 +109,6 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Question not found");
     }
-
     revalidatePath(path);
   } catch (error) {
     console.log(error);
@@ -125,7 +125,7 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     let updateQuery = {};
 
     if (hasdownVoted) {
-      updateQuery = { $pull: { downvote: userId } };
+      updateQuery = { $pull: { downvotes: userId } };
     } else if (hasupVoted) {
       updateQuery = {
         $pull: { upvotes: userId },
@@ -134,6 +134,9 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     } else {
       updateQuery = { $addToSet: { downvotes: userId } };
     }
+
+    console.log("downvote:",updateQuery);
+    
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,

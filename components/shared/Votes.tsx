@@ -31,6 +31,7 @@ const Votes = ({
 }: Props) => {
   const pathname = usePathname();
 
+  console.log(upvotes);
   
 
   const handleSave = () => {};
@@ -57,6 +58,8 @@ const Votes = ({
             path:pathname,
     }) */
       }
+      console.log("Upvotes:", upvotes);
+
       return;
     }
     if (action === "downvote") {
@@ -77,6 +80,8 @@ const Votes = ({
             path:pathname,
     }) */
       }
+      console.log("Downvotes:", downvotes);
+
     }
   };
 

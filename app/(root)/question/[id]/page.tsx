@@ -10,7 +10,7 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const page = async ({ params, searchParams }) => {
   const result = await getQuestionById({ questionId: params.id });
@@ -23,6 +23,8 @@ const page = async ({ params, searchParams }) => {
   }
 
   console.log("answer length:", result.answer.length);
+
+  console.log(result.upvotes.length);
 
   return (
     <>
@@ -48,9 +50,9 @@ const page = async ({ params, searchParams }) => {
               type="Question"
               itemId={JSON.stringify(result._id)}
               userId={JSON.stringify(mongoUser._id)}
-              upvotes={result.upvotes.lenghth}
+              upvotes={result.upvotes.length}
               hasupVoted={result.upvotes.includes(mongoUser._id)}
-              downvotes={result.downvotes.lenghth}
+              downvotes={result.downvotes.length}
               hasdownVoted={result.downvotes.includes(mongoUser._id)}
               hasSaved={mongoUser?.saved.includes(result._id)}
             />
