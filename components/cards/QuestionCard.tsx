@@ -19,11 +19,12 @@ interface QuestionProps {
         name: string;
         picture: string;
       }>;
-  upvotes: number;
+  upvotes: string[];
   views: number;
   answers: Array<object>;
   createdAt: Date;
 }
+
 
 const QuestionCard: React.FC<QuestionProps> = ({
   title,
