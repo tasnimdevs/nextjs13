@@ -23,10 +23,11 @@ interface QuestionProps {
   views: number;
   answers: Array<object>;
   createdAt: Date;
+  clerkId?: string;
 }
 
-
 const QuestionCard: React.FC<QuestionProps> = ({
+  clerkId,
   title,
   _id,
   tags,

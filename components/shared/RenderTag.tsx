@@ -12,7 +12,7 @@ interface Props {
 
 const RenderTag = ({ _id, name, totalQuestions, showCount }: Props) => {
 
-  console.log("name:",name);
+  // console.log("name:",name);
   
   return (
     <Link href={`/tags/${_id}`} className="flex justify-between gap-2">

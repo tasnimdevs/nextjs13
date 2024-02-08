@@ -13,7 +13,7 @@ const Page = async({params, searchParams}:URLProps) => {
         searchQuery:searchParams.q
     })
 
-    console.log("tag title:",result);
+    console.log("tag title:",result.questions[0]._id);
     
   return (
     <>

@@ -25,7 +25,7 @@ const AllAnswers = async ({
 }: Props) => {
   const result = await getAnswer({ questionId });
 
-  console.log("result lenght:", result.answers);
+  // console.log("result lenght:", result.answers);
 
   return (
     <div className="mt-11">

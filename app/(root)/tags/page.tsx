@@ -11,6 +11,7 @@ const Page = async () => {
   const result = await getAllTags({});
 
   
+// console.log("tags page:", result);
 
   return (
     <>
