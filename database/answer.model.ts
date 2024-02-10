@@ -14,7 +14,7 @@ const AnswersSchema = new Schema({
   upvotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   downvotes: [{ type: Schema.Types.ObjectId, ref: "User" }],
   author: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
-  question: [{ type: Schema.Types.ObjectId, ref: "Answer", required: true }],
+  question: [{ type: Schema.Types.ObjectId, ref: "Question", required: true }],
   createdAt: { type: Date, default: Date.now },
 });
 

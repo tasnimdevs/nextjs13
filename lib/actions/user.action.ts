@@ -219,14 +219,19 @@ export async function getUserAnswers(params: GetUserStatsParams) {
 
     const { userId, page = 1, pageSize = 10 } = params;
 
-    const totalAnswers = await Answer.countDocuments({ author: userId });
+    const totalAnswers = await Answer.countDocuments({ author: userId})
 
     const userAnswers = await Answer.find({ author: userId })
-      .sort({ views: -1, upvotes: -1 })
-      .populate("question", "_id title")
-      .populate("author", "_id clerkId name picture");
-
+      .sort({ upvotes: -1 })
+      .populate('question', '_id title')
+      .populate('author', '_id clerkId name picture')
+      console.log("user answer:",userAnswers);
+      
+      
     return { totalAnswers, answers: userAnswers };
+
+    
+    
   } catch (error) {
     console.log(error);
     throw error;

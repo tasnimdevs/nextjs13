@@ -4,10 +4,10 @@ import Metric from "../shared/Metric";
 import Link from "next/link";
 interface Props {
   _id: string;
-  question:{
-    _id:string;
-    title:string
-  }
+  question: {
+    _id: string;
+    title: string;
+  };
   author:
     | {
         _id: string;
@@ -21,7 +21,7 @@ interface Props {
       }>;
   upvotes: string[];
   createdAt: Date;
-  clerkId?: string;
+  clerkId?: string | null;
 }
 
 const AnswerCard = ({
@@ -34,12 +34,13 @@ const AnswerCard = ({
 }: Props) => {
   const authorName = Array.isArray(author) ? author[0].name : author.name;
 
-  console.log("answercard:", authorName);
-  
+  console.log("answer card:", question);
 
   return (
     <Link
-      href={`/question/${question?._id}/#${_id}`}
+      href={`/question/${
+        Array.isArray(question) ? question[0]._id : question._id
+      }/#${_id}`}
       className="card-wrapper rounded-[10px] px-11 py-9"
     >
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -49,7 +50,7 @@ const AnswerCard = ({
           </span>
 
           <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
-            {question.title}
+            {Array.isArray(question) ? question[0].title : question.title}
           </h3>
         </div>
       </div>
