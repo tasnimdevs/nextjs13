@@ -47,7 +47,7 @@ const QuestionCard: React.FC<QuestionProps> = ({
   answers,
   createdAt,
 }: QuestionProps) => {
-  console.log("author", author);
+  // console.log("author", author);
 
   const showActionButtons =
   clerkId &&
