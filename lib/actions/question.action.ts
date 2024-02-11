@@ -5,12 +5,15 @@ import { connectToDatabase } from "./mongoose";
 import Tag from "@/database/tag.model";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsParams,
   QuestionVoteParams,
 } from "./shared.types";
 import User from "@/database/user.model";
 import { revalidatePath } from "next/cache";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
@@ -66,10 +69,14 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     const { questionId } = params;
 
     const question = await Question.findById(questionId)
-      .populate({ path: 'tags', model: Tag, select: '_id name'})
-      .populate({ path: 'author', model: User, select: '_id clerkId name picture'})
+      .populate({ path: "tags", model: Tag, select: "_id name" })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      });
 
-      return question;
+    return question;
   } catch (error) {
     console.log(error);
     throw error;
@@ -97,7 +104,7 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       // If not voted, add the upvote
       updateQuery = { $addToSet: { upvotes: userId } };
     }
-    console.log("upvote:",updateQuery);
+    console.log("upvote:", updateQuery);
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
@@ -132,8 +139,7 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
       updateQuery = { $addToSet: { downvotes: userId } };
     }
 
-    console.log("downvote:",updateQuery);
-    
+    console.log("downvote:", updateQuery);
 
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
@@ -147,5 +153,25 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    connectToDatabase();
+    const { questionId, path } = params;
+
+    await Question.deleteOne({ _id: questionId });
+    await Answer.deleteMany({ qustion: questionId });
+    await Interaction.deleteMany({ question: questionId });
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } }
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw Error;
   }
 }

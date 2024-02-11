@@ -2,6 +2,8 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import React from "react";
 import Metric from "../shared/Metric";
 import Link from "next/link";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 interface Props {
   _id: string;
   question: {
@@ -34,7 +36,12 @@ const AnswerCard = ({
 }: Props) => {
   const authorName = Array.isArray(author) ? author[0].name : author.name;
 
-  console.log("answer card:", question);
+  const showActionButtons = clerkId && (
+    (Array.isArray(author) && author.length > 0 && 'clerkId' in author[0] && clerkId === author[0].clerkId) ||
+    (!Array.isArray(author) && 'clerkId' in author && clerkId === author.clerkId)
+  );
+
+  // console.log("answer card:", question);
 
   return (
     <Link
@@ -53,6 +60,11 @@ const AnswerCard = ({
             {Array.isArray(question) ? question[0].title : question.title}
           </h3>
         </div>
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       <div className="flex-between mt-6 w-full flex-wrap gap-3">

@@ -3,7 +3,15 @@ import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
+interface Author {
+  _id: string;
+  name: string;
+  picture: string;
+  clerkId?: string | null | undefined;
+}
 interface QuestionProps {
   title: string;
   _id: string;
@@ -13,11 +21,13 @@ interface QuestionProps {
         _id: string;
         name: string;
         picture: string;
+        clerkId?: string | null; // Add clerkId to the type
       }
     | Array<{
         _id: string;
         name: string;
         picture: string;
+        clerkId?: string | null; // Add clerkId to the type
       }>;
   upvotes: string[];
   views: number;
@@ -37,6 +47,15 @@ const QuestionCard: React.FC<QuestionProps> = ({
   answers,
   createdAt,
 }: QuestionProps) => {
+  console.log("author", author);
+
+  const showActionButtons =
+  clerkId &&
+  (Array.isArray(author)
+    ? author.length > 0 && clerkId === author[0]?.clerkId
+    : clerkId === author?.clerkId); 
+    // const showActionButtons = clerkId && clerkId === author.clerkId;
+
   const authorName = Array.isArray(author) ? author[0].name : author.name;
 
   return (
@@ -52,7 +71,14 @@ const QuestionCard: React.FC<QuestionProps> = ({
             </h3>
           </Link>
         </div>
+
+        <SignedIn>
+          {showActionButtons && (
+            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
+
       <div className="mt-3.5 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
