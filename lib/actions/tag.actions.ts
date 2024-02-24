@@ -47,11 +47,12 @@ export async function getAllTags(params: GetAllTagsParams) {
 export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
   try {
     connectToDatabase();
-    const { tagId, searchQuery } = params;
+
+    const { tagId, page = 1, pageSize = 10, searchQuery } = params;
 
     const tagFilter: FilterQuery<ITag> = { _id: tagId };
 
-    const tag = await Tag.findOne({ tagFilter }).populate({
+    const tag = await Tag.findOne(tagFilter).populate({
       path: "questions",
       model: Question,
       match: searchQuery
@@ -67,13 +68,17 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
     });
 
     if (!tag) {
-      throw new Error("user not found");
+      throw new Error("Tag not found");
     }
+
+    console.log(tag);
+
     const questions = tag.questions;
+
     return { tagTitle: tag.name, questions };
   } catch (error) {
     console.log(error);
-    throw Error;
+    throw error;
   }
 }
 
@@ -82,10 +87,10 @@ export async function getTopPopularTags() {
     connectToDatabase();
 
     const popularTags = await Tag.aggregate([
-      { $project: { name: 1, numberOfQuestions: { $size: "$questions" }}},
-      { $sort: { numberOfQuestions: -1 }}, 
-      { $limit: 5 }
-    ])
+      { $project: { name: 1, numberOfQuestions: { $size: "$questions" } } },
+      { $sort: { numberOfQuestions: -1 } },
+      { $limit: 5 },
+    ]);
 
     return popularTags;
   } catch (error) {
