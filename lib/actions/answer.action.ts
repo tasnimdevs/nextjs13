@@ -2,7 +2,12 @@
 
 import Answer from "@/database/answer.model";
 import { connectToDatabase } from "./mongoose";
-import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
+import {
+  AnswerVoteParams,
+  CreateAnswerParams,
+  DeleteAnswerParams,
+  GetAnswersParams,
+} from "./shared.types";
 import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
 import Interaction from "@/database/interaction.model";
@@ -31,24 +36,25 @@ export async function getAnswer(params: GetAnswersParams) {
   try {
     connectToDatabase();
 
-    const { questionId, sortBy } = params;
+    const { questionId, sortBy, page = 1, pageSize = 1 } = params;
+    const skipAmount = (page - 1) * pageSize;
 
     let sortOptions = {};
 
     switch (sortBy) {
       case "highestUpvotes":
-        sortOptions = { upvotes: -1 }
+        sortOptions = { upvotes: -1 };
         break;
       case "lowestUpvotes":
-        sortOptions = { upvotes: 1 }
+        sortOptions = { upvotes: 1 };
         break;
       case "recent":
-        sortOptions = { createdAt: -1 }
+        sortOptions = { createdAt: -1 };
         break;
       case "old":
-        sortOptions = { createdAt: 1 }
+        sortOptions = { createdAt: 1 };
         break;
-    
+
       default:
         break;
     }
@@ -56,8 +62,15 @@ export async function getAnswer(params: GetAnswersParams) {
     const answers = await Answer.find({ question: questionId })
       .populate("author", "_id clerkId name picture")
       .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize);
 
-    return { answers };
+    const totalAnswer = await Answer.countDocuments({
+      question: questionId,
+    });
+
+    const isNextAnswer = totalAnswer > skipAmount + answers.length;
+    return { answers, isNextAnswer };
   } catch (error) {
     console.log(error);
     throw error;
@@ -85,7 +98,7 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
       // If not voted, add the upvote
       updateQuery = { $addToSet: { upvotes: userId } };
     }
-    console.log("upvote:",updateQuery);
+    console.log("upvote:", updateQuery);
 
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
       new: true,
@@ -120,8 +133,7 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
       updateQuery = { $addToSet: { downvotes: userId } };
     }
 
-    console.log("downvote:",updateQuery);
-    
+    console.log("downvote:", updateQuery);
 
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
       new: true,
@@ -146,12 +158,15 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
 
     const answer = await Answer.findById(answerId);
 
-    if(!answer) {
+    if (!answer) {
       throw new Error("Answer not found");
     }
 
     await answer.deleteOne({ _id: answerId });
-    await Question.updateMany({ _id: answer.question }, { $pull: { answers: answerId }});
+    await Question.updateMany(
+      { _id: answer.question },
+      { $pull: { answers: answerId } }
+    );
     await Interaction.deleteMany({ answer: answerId });
 
     revalidatePath(path);
