@@ -6,12 +6,12 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
 
-interface Author {
+/* interface Author {
   _id: string;
   name: string;
   picture: string;
   clerkId?: string | null | undefined;
-}
+} */
 interface QuestionProps {
   title: string;
   _id: string;
@@ -33,7 +33,7 @@ interface QuestionProps {
   views: number;
   answers: Array<object>;
   createdAt: Date;
-  clerkId?: string;
+  clerkId?: string | null | undefined;
 }
 
 const QuestionCard: React.FC<QuestionProps> = ({
