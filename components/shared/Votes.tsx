@@ -1,6 +1,6 @@
 "use client";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
-import { ViewQuestion } from "@/lib/actions/interaction.action";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 import {
   downvoteQuestion,
   upvoteQuestion,
@@ -90,7 +90,7 @@ const Votes = ({
   };
 
   useEffect(() => {
-    ViewQuestion({
+    viewQuestion({
       questionId: JSON.parse(itemId),
       userId: userId ? JSON.parse(userId) : undefined,
     });

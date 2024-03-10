@@ -13,7 +13,7 @@ import Link from "next/link";
 import React from "react";
 
 interface Params {
-  id: string; // Change the type to match your actual id type
+  id: string; 
 }
 
 const page = async ({ params }: { params: Params }, searchParams: any) => {
