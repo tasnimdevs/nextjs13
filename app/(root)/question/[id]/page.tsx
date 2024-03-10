@@ -12,7 +12,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const page = async ({ params, searchParams }) => {
+interface Params {
+  id: string; // Change the type to match your actual id type
+}
+
+const page = async ({ params }: { params: Params }, searchParams: any) => {
   const result = await getQuestionById({ questionId: params.id });
   const { userId: clerkId } = auth();
 
