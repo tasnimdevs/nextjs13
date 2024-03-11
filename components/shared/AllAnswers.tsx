@@ -30,7 +30,7 @@ const AllAnswers = async ({
     sortBy: filter,
   });
 
-  // console.log("result lenght:", result.answers);
+// console.log("result:", result.answers);
 
   return (
     <div className="mt-11">

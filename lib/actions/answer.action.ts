@@ -20,10 +20,14 @@ export async function createAnswer(params: CreateAnswerParams) {
     const { content, author, question, path } = params;
 
     const newAnswer = await Answer.create({ content, author, question });
+
+    console.log("newAnswer:", newAnswer);
+    
+    
     
     // Add the answer to the question's answers array
     const questionObject = await Question.findByIdAndUpdate(question, {
-      $push: { answers: newAnswer._id}
+      $push: { answer: newAnswer._id}
     })
 
     await Interaction.create({
@@ -46,7 +50,7 @@ export async function getAnswer(params: GetAnswersParams) {
   try {
     connectToDatabase();
 
-    const { questionId, sortBy, page = 1, pageSize = 1 } = params;
+    const { questionId, sortBy, page = 1, pageSize = 10 } = params;
 
     /*     for Pagination */
     const skipAmount = (page - 1) * pageSize;
@@ -77,9 +81,14 @@ export async function getAnswer(params: GetAnswersParams) {
       .skip(skipAmount)
       .limit(pageSize);
 
+      // console.log("answers:", answers);
+      
+
     const totalAnswer = await Answer.countDocuments({
       question: questionId,
     });
+    // console.log("totalAnswer:", totalAnswer);
+    
 
     const isNextAnswer = totalAnswer > skipAmount + answers.length;
     return { answers, isNextAnswer };

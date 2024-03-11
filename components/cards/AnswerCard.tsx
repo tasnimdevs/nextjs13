@@ -41,7 +41,6 @@ const AnswerCard = ({
     (!Array.isArray(author) && 'clerkId' in author && clerkId === author.clerkId)
   );
 
-  // console.log("answer card:", question);
 
   return (
     <Link

@@ -26,7 +26,7 @@ const page = async ({ params }: { params: Params }, searchParams: any) => {
     mongoUser = await getUserById({ userId: clerkId });
   }
 
-  console.log("answer length:", result.answer.length);
+  console.log("answer length:", result.answer);
 
   console.log(result.upvotes.length);
 
