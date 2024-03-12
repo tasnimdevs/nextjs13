@@ -18,6 +18,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.action";
 import { ProfileSchema } from "@/lib/validation";
 import { Textarea } from "../ui/textarea";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   clerkId: string;
