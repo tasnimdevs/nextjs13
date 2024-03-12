@@ -2,13 +2,13 @@ import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import React from "react";
 import Filters from "@/components/shared/Filters";
 import { UserFilters } from "@/constants/filters";
-import { getAllUsers } from "@/lib/actions/user.action";
 import Link from "next/link";
 import UserCard from "@/components/cards/UserCard";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
 import type {Metadata} from 'next'
+import { getAllUsers } from "@/lib/actions/user.action";
 
 export const metadata: Metadata = {
   title:'Community | DevFlow',

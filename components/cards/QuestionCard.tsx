@@ -6,40 +6,30 @@ import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
 
-/* interface Author {
-  _id: string;
-  name: string;
-  picture: string;
-  clerkId?: string | null | undefined;
-} */
 interface QuestionProps {
-  title: string;
   _id: string;
-  tags: Array<{ _id: string; name: string }>;
-  author:
-    | {
-        _id: string;
-        name: string;
-        picture: string;
-        clerkId?: string | null; // Add clerkId to the type
-      }
-    | Array<{
-        _id: string;
-        name: string;
-        picture: string;
-        clerkId?: string | null; // Add clerkId to the type
-      }>;
+  title: string;
+  tags: {
+    _id: string;
+    name: string;
+  }[];
+  author: {
+    _id: string;
+    name: string;
+    picture: string;
+    clerkId?: string | null;
+  };
   upvotes: string[];
   views: number;
   answers: Array<object>;
   createdAt: Date;
-  clerkId?: string | null | undefined;
+  clerkId?: string;
 }
 
-const QuestionCard: React.FC<QuestionProps> = ({
+const QuestionCard = ({
   clerkId,
-  title,
   _id,
+  title,
   tags,
   author,
   upvotes,
@@ -47,26 +37,18 @@ const QuestionCard: React.FC<QuestionProps> = ({
   answers,
   createdAt,
 }: QuestionProps) => {
-  // console.log("author", author);
-
-  const showActionButtons =
-  clerkId &&
-  (Array.isArray(author)
-    ? author.length > 0 && clerkId === author[0]?.clerkId
-    : clerkId === author?.clerkId); 
-    // const showActionButtons = clerkId && clerkId === author.clerkId;
-
+  const showActionButtons = clerkId && clerkId === author.clerkId;
   const authorName = Array.isArray(author) ? author[0].name : author.name;
-
+const authorPicture =Array.isArray(author) ? author[0].picture : author.picture
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
-      <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
+    <div className='card-wrapper rounded-[10px] p-9 sm:px-11'>
+      <div className='flex flex-col-reverse items-start justify-between gap-5 sm:flex-row'>
         <div>
-          <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
+          <span className='subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden'>
             {getTimestamp(createdAt)}
           </span>
           <Link href={`/question/${_id}`}>
-            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex">
+            <h3 className='sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1'>
               {title}
             </h3>
           </Link>
@@ -74,49 +56,51 @@ const QuestionCard: React.FC<QuestionProps> = ({
 
         <SignedIn>
           {showActionButtons && (
-            <EditDeleteAction type="Question" itemId={JSON.stringify(_id)} />
+            <EditDeleteAction type='Question' itemId={JSON.stringify(_id)} />
           )}
         </SignedIn>
       </div>
 
-      <div className="mt-3.5 flex flex-wrap gap-2">
+      <div className='mt-3.5 flex flex-wrap gap-2'>
         {tags.map((tag) => (
           <RenderTag key={tag._id} _id={tag._id} name={tag.name} />
         ))}
       </div>
-      <div className="flex-between mt-6 w-full flex-wrap gap-3">
+
+      <div className='flex-between mt-6 w-full flex-wrap gap-3'>
         <Metric
-          imgUrl={Array.isArray(author) ? author[0].picture : author.picture}
-          alt="user"
+          imgUrl={authorPicture}
+
+          alt='user'
           value={authorName}
-          title={`-asked ${getTimestamp(createdAt)}`}
-          href={`/profile/${
-            Array.isArray(author) ? author[0]._id : author._id
-          }`}
+          title={` - asked ${getTimestamp(createdAt)}`}
+          href={`/profile/${author._id}`}
           isAuthor
-          textStyles="small-medium text-dark400_light800"
+          textStyles='body-medium text-dark400_light700'
         />
-        <Metric
-          imgUrl="/assets/icons/like.svg"
-          alt="Upvotes"
-          value={formatAndDivideNumber(upvotes.length)}
-          title="Votes"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/message.svg"
-          alt="Message"
-          value={formatAndDivideNumber(answers ? answers.length : 0)}
-          title="Answers"
-          textStyles="small-medium text-dark400_light800"
-        />
-        <Metric
-          imgUrl="/assets/icons/eye.svg"
-          alt="eye"
-          value={formatAndDivideNumber(views)}
-          title="Views"
-          textStyles="small-medium text-dark400_light800"
-        />
+        <div className='flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start'>
+          <Metric
+            imgUrl='/assets/icons/like.svg'
+            alt='Upvotes'
+            value={formatAndDivideNumber(upvotes.length)}
+            title=' Votes'
+            textStyles='small-medium text-dark400_light800'
+          />
+          <Metric
+            imgUrl='/assets/icons/message.svg'
+            alt='message'
+            value={formatAndDivideNumber(answers ? answers.length : 0)}
+            title=' Answers'
+            textStyles='small-medium text-dark400_light800'
+          />
+          <Metric
+            imgUrl='/assets/icons/eye.svg'
+            alt='eye'
+            value={formatAndDivideNumber(views)}
+            title=' Views'
+            textStyles='small-medium text-dark400_light800'
+          />
+        </div>
       </div>
     </div>
   );
