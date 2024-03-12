@@ -18,7 +18,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { updateUser } from "@/lib/actions/user.action";
 import { ProfileSchema } from "@/lib/validation";
 import { Textarea } from "../ui/textarea";
-import { toast } from "../ui/use-toast";
+
+import type {Metadata} from 'next'
+
+export const metadata: Metadata = {
+  title:'Profile | DevFlow',
+  description: 'Dev OverFlow is a community of 1,000,000+ developers. Join us.',
+}
 
 interface Props {
   clerkId: string;

@@ -8,6 +8,13 @@ import UserCard from "@/components/cards/UserCard";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
+import type {Metadata} from 'next'
+
+export const metadata: Metadata = {
+  title:'Community | DevFlow',
+  description: 'Dev OverFlow is a community of 1,000,000+ developers. Join us.',
+}
+
 const Page = async ({ searchParams }: SearchParamsProps) => {
   const result = await getAllUsers({
     searchQuery: searchParams.q,
