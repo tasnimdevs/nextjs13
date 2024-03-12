@@ -27,7 +27,7 @@ interface QuestionProps {
   views: number;
   answers: Array<object>;
   createdAt: Date;
-  clerkId?: string | null | undefined;
+  clerkId?: string | undefined;
 }
 const QuestionCard: React.FC<QuestionProps> = ({
   clerkId,
