@@ -50,7 +50,7 @@ export async function getAnswer(params: GetAnswersParams) {
   try {
     connectToDatabase();
 
-    const { questionId, sortBy, page = 1, pageSize = 10 } = params;
+    const { questionId, sortBy, page = 1, pageSize = 4 } = params;
 
     /*     for Pagination */
     const skipAmount = (page - 1) * pageSize;
@@ -85,12 +85,15 @@ export async function getAnswer(params: GetAnswersParams) {
       
 
     const totalAnswer = await Answer.countDocuments({
-      question: questionId,
+      question: questionId
     });
     // console.log("totalAnswer:", totalAnswer);
     
 
     const isNextAnswer = totalAnswer > skipAmount + answers.length;
+
+    console.log("isNextAnswer:", isNextAnswer);
+    
     return { answers, isNextAnswer };
   } catch (error) {
     console.log(error);
